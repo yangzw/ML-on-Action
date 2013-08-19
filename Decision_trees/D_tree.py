@@ -107,15 +107,15 @@ def grabTree(filename):
     import pickle
     fr = open(filename)
     return pickle.load(fr)
-    
+'''    
 myDat,labels = createDataSet()
-'''
+
 print calcShannonEnt(myDat)
 myDat.append([1,1,'maybe'])
 print calcShannonEnt(myDat)
 
 print chooseBestFeatureToSplit(myDat)
-'''
+
 
 blabels = labels[:]
 myTree =  createTree(myDat,labels)
@@ -128,3 +128,4 @@ lensesLabels = ['age','prescript','astigmatic','tearRate']
 lensesTree = createTree(lenses,lensesLabels)
 from treePlotter import *
 createPlot(lensesTree)
+'''

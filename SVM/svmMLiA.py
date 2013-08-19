@@ -296,4 +296,4 @@ def testDigits(kTup=('rbf',10)):
     print "the test error rate is:%f" % (float(errorCount)/m)
     
     
-testDigits(('rbf',20))
+#testDigits(('rbf',20))

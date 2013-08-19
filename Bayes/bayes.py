@@ -90,7 +90,7 @@ def testingNB():
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
     print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)  
     
-testingNB()
+#testingNB()
 
 
 #简单地解析文本成字符串列表
@@ -132,12 +132,12 @@ def spamTest():
             errorCount += 1
     print 'the error rate is: ',float(errorCount)/len(testSet)   
     return float(errorCount)/len(testSet)
-
+'''
 totalerror = 0.0
 for i in range(9):        
     totalerror += spamTest()
 print totalerror/10
-
+'''
 #Rss 源分类器及高频词去除函数
 #（以下四行）计算出现频率 
 def calcMostFreq(vocabList,fullText):
@@ -185,10 +185,10 @@ def localWords(feed1,feed0):
             errorCount += 1
     print 'the error rate is: ',float(errorCount)/len(testSet)
     return vocabList,p0V,p1V
-
+'''
 ny=feedparser.parse('http://newyork.craigslist.org/stp/index.rss')
 sf=feedparser.parse('http://sfbay.craigslist.org/stp/index.rss')
-
+'''
 def getTopWords(ny,sf):
     vocabList,p0V,p1V=localWords(ny,sf)
     topNY=[]; topSF=[]
@@ -204,4 +204,4 @@ def getTopWords(ny,sf):
     for item in sortedNY:
         print item[0]
         
-getTopWords(ny,sf)
+#getTopWords(ny,sf)
