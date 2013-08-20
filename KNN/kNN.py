@@ -41,12 +41,12 @@ def classify0(inX, dataSet, labels, k):
     for i in range(k):                       # vote for the labels
         voteIlabel = labels[sortedDistIndicies[i]]
         classCount[voteIlabel] = classCount.get(voteIlabel,0) + 1
-    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(1), reverse=True)
-    
+    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(1), reverse=True) # iteritems() returns a tuple(key,value), itemgetter(1) choose to compare value
+    '''
     print "-----"
-    print sortedClassCount
+    print sortedClassCount,classCount
     print "-----"
-
+    '''
     return sortedClassCount[0][0]
 
 
@@ -105,19 +105,22 @@ def classifyPerson():
     percentTats = float(raw_input("percentage of time spent playing video games?"))
     ffMiles = float(raw_input("frequent flier miles earned per year?"))
     iceCream = float(raw_input("liters of ice cream consumed per year?"))
+    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
     inArr = array([ffMiles, percentTats, iceCream])
     classifierResult = classify0((inArr-minVals)/ranges,normMat,datingLabels,3)
     print "You will probably like this person: ",resultList[classifierResult - 1]
 
         
-'''
-datingDataMat,datingLabels = file2matrix(a_path + "datingTestSet2.txt")
-normMat,ranges, minVals = autoNorm(datingDataMat) 
+def fun():
+    datingDataMat,datingLabels = file2matrix(a_path + "datingTestSet2.txt")
+    normMat,ranges, minVals = autoNorm(datingDataMat) 
 
-fig = plt.figure()
-ax  = fig.add_subplot(111)
-ax.scatter(normMat[:,0],normMat[:,1],15.0*array(datingLabels),15.0*array(datingLabels))
-plt.show()
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    ax.scatter(normMat[:,0],normMat[:,1],15.0*array(datingLabels),15.0*array(datingLabels))
+    plt.show()
+'''
 
 show_diff_horatio()
 #classifyPerson()
