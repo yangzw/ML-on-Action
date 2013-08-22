@@ -1,1 +1,21 @@
 navie bayes
+
+Bayes' rule:
+If we have P(x|c) but we want to have P(c|x), we can find it with following:
+P(c|x) = P(x|c)*P(c)/p(x)
+
+naviw bayes:
+p(ci|W) = P(W|ci)*P(ci) / p(W)
+
+to calculate P(W|ci)
+we're assuming that all the features were independently likely, and something called conditional independence
+so P(W|ci) = P(w0,w1,w2..wn|ci) = P(w0|ci)*P(w1|ci)...P(wn|ci)
+
+Pros: Works with a small amount of data, handles multiple classes
+Cons:Snesitive to how the input data is prepared
+Works with:Nominal values
+
+There are a number of practical considerations when implementing naïve Bayes in a modern programming language.
+Underflow is one problem that can be addressed by using the logarithm of probabilities in your calculations. 
+The bag-of-words model is an  improvement  on  the  set-of-words  model  when  approaching  document  classifica-tion. 
+There are a number of other improvements, such as removing stop words, and you can spend a long time optimizing a tokenizer. 

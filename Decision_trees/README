@@ -1,1 +1,13 @@
 Decision tree
+Pros: Computationally cheap to use, easy for humans to understand learned results, missing value OK, can deal with irrelevant features
+Cons: Prone to overfitting
+Wroks with:Numeric values, nominal values
+
+To build a decision tree, you need to make a first decision on the dataset to dictate which feature is used to split the data.
+To determine this, you try every feature and measure which split will give you the best results.
+you can measure the entropy gain to find the best feature.
+After that, you’ll split the dataset into sub-sets. The subsets will then traverse down the branches of the first decision node. 
+If the data on the branches is the same class, then you’ve properly classified it and don’t need to continue splitting it.
+If the data isn’t the same, then you need to repeat the splitting process on this subset.
+The decision on how to split this subset is done the same way as the original dataset, 
+and you repeat this process until you’ve classified all the data.

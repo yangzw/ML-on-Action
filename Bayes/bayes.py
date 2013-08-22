@@ -43,7 +43,7 @@ def bagOfWords2Vec(vocabList, inputSet):
 
 
 #对数据进行训练,获取概率
-#pAbusive = P(ci) p1Vect = p(w/ci = 1) p0Vect = p(w/ci = 0)
+#pAbusive = P(ci=1) p1Vect = p(w/ci = 1) p0Vect = p(w/ci = 0)
 def trainNB0(trainMatrix,trainCategory):
     numTrainDocs = len(trainMatrix)
     numWords = len(trainMatrix[0])
@@ -53,13 +53,13 @@ def trainNB0(trainMatrix,trainCategory):
     p0Denom = 2.0; p1Denom = 2.0
     for i in range(numTrainDocs):
         if trainCategory[i] == 1:
-            #（以下两行）向量相加 
+            #（以下两行）向量相加,计算每个词出现的概率
             p1Num += trainMatrix[i]
             p1Denom += sum(trainMatrix[i])
         else:
             p0Num += trainMatrix[i]
             p0Denom += sum(trainMatrix[i])
-    p1Vect =  log(p1Num/p1Denom) #change to log()为防止下溢出
+    p1Vect =  log(p1Num/p1Denom) #change to log()为防止太多很小的数相乘出现下溢出
     # 对每个元素做除法
     p0Vect = log(p0Num/p0Denom) 
     return p0Vect,p1Vect,pAbusive
@@ -79,11 +79,13 @@ def testingNB():
     listOPosts,listClasses = loadDataSet()
     myVocabList = createVocabList(listOPosts)
     trainMat=[]
+    #转换成词袋/词集模型
     for postinDoc in listOPosts:
         trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
     p0V,p1V,pAb = trainNB0(array(trainMat),array(listClasses))
     
     testEntry = ['love', 'my', 'dalmation']
+    #转化成有无形式
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
     print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)
     testEntry = ['stupid', 'garbage']
@@ -105,12 +107,13 @@ def spamTest():
     for i in range(1,26):
         wordList = textParse(open('email/spam/%d.txt' % i).read())
         docList.append(wordList)
-        fullText.extend(wordList)
+        #fullText.extend(wordList)
         classList.append(1)
         wordList = textParse(open('email/ham/%d.txt' % i).read())
         docList.append(wordList)
-        fullText.extend(wordList)
+        #fullText.extend(wordList)
         classList.append(0)
+    #创建词集
     vocabList = createVocabList(docList)
     #随机生成训练集
     trainingSet = range(50);testSet=[]

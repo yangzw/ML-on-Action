@@ -73,7 +73,7 @@ def createTree(dataSet,labels):
     if len(dataSet[0]) == 1:
         return myjorityCnt(classList)
     bestFeat = chooseBestFeatureToSplit(dataSet)
-    bestFeatLabel = labels[bestFeat]\
+    bestFeatLabel = labels[bestFeat]
     #树用一个字典保存
     myTree = {bestFeatLabel:{}}
     del(labels[bestFeat])
