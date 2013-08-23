@@ -1,4 +1,40 @@
 Logistic regression:
 
+Pros: Computationally inexpensive, easy to implement, knowledge representation easy to interpret
+Cons: Prone to underfitting, may have low accuracy
+
+For the logistic regression classifier we’ll take our features and multiply each one
+by a weight and then add them up. This result will be put into the sigmoid, and we’ll
+get a number between 0 and 1. Anything above 0.5 we’ll classify as a 1, and anything
+below  0.5  we’ll  classify  as  a  0.
+
+find the best regression coefficients:
+Gradient ascent:
+If we want to find the maximum point on a function, then the best way to move is in the direction of the gradient
+alpha: step
+Pseudocode:
+ Start with the weights all set to 1
+ Repeat R number of times:
+ 	Calculate the gradient of the entire dataset
+ 	Update the weights vector by alpha*gradient (W := W + alpha*gradient)
+ return the weights vector
+
+Stochastic Gradient Ascent:
+Start with the weights all set to 1
+For each piece in the dataset:
+	calculate the gradient of one piece of data
+	update the weights vector by alpha*gradient
+Return the weight vector
+
+Logistic regression is finding best-fit parameters to a nonlinear function called the sigmoid.
+Methods of optimization can be used to find the best-fit parameters. 
+Among the optimization algorithms, one of the most common algorithms is gradient ascent. 
+Gradient ascent can be simplified with stochastic gradient ascent. 
+Stochastic gradient ascent can do as well as gradient ascent using far fewer computing  resources.  
+In addition,  stochastic  gradient  ascent  is  an  online  algorithm;
+it can update what it has learned as new data comes in rather than reloading all of the data
+as in batch processing. 
+
 reference(exclude the links listed in root dir's README file):
-JerryLead blog: http://52opencourse.com/108/coursera%E5%85%AC%E5%BC%80%E8%AF%BE%E7%AC%94%E8%AE%B0-%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E8%AF%BE-%E5%A4%9A%E5%8F%98%E9%87%8F%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-linear-regression-with-multiple-variables
+JerryLead blog:http://www.cnblogs.com/jerrylead/archive/2011/03/05/1971867.html
+52公开课: http://52opencourse.com/125/coursera%E5%85%AC%E5%BC%80%E8%AF%BE%E7%AC%94%E8%AE%B0-%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E8%AF%BE-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92-logistic-regression
