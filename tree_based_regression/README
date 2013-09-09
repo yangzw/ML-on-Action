@@ -1,0 +1,14 @@
+Tree-based Regression:
+
+Pros: Fits complex, nonlinear data
+Cons: Difficult to interpret results
+Works with: Numeric values, nominal values
+
+Prepruning and Postpruning
+1)postpruning uses a test set to prune the tree. It's a more idealistic 
+method of pruning because it doesn't use any user-defined parameters.
+2)postpruning isn't as effective as prepruning
+
+Model Trees:
+interpretable
+higher accuracy

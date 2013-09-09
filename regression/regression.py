@@ -228,8 +228,13 @@ def crossvalidation(xArr,yArr,numVal = 10):
             errorMat[i,k]=rssError(yEst.T.A, array(testY))
     meanErrors = mean(errorMat,0)
     minMean = float(min(meanErrors))
+    wMat = ridgeTest(mat(xArr),mat(yArr))
     bestWeights = wMat[nonzero(meanErrors==minMean)]
-    xMat = matTestX(xArr);yMat = mat(yArr).T
+    print "===bestWeights",bestWeights
+    print "===minMean",minMean
+    print "===meanErrors",meanErrors
+    print "===wMat",wMat
+    xMat = mat(xArr);yMat = mat(yArr).T
     meanX = mean(xMat,0);varX = var(xMat,0)
     unReg = bestWeights/varX
     print "the best model from Ridge Regression is:\n",unReg
