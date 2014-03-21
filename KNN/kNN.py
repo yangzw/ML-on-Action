@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 Created on Aug 2, 2013
-from 《Machine learning on Action》 
+from 《Machine learning on Action》
 @author: t-zhyan
 '''
 from numpy import *
@@ -10,7 +10,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from os import listdir
 
-a_path = "C:/Users/t-zhyan/workspace/ML-on-Action/KNN/"
+a_path = "./"
 
 def createDataSet():
     group = array([[1.0,1.1],[1.0,1.0],[0,0],[0,0.1]])
@@ -23,21 +23,21 @@ print group
 print labels
 '''
 
-''' 
+'''
 inX: the input vector to classify
 dataSet:full matrix of training examples
 labels: the labels of the training examples, already labeled
 k
 '''
 def classify0(inX, dataSet, labels, k):
-    dataSetSize = dataSet.shape[0] 
+    dataSetSize = dataSet.shape[0]
     diffMat = tile(inX, (dataSetSize,1)) - dataSet #count the diff between inX and training examples
     sqDiffMat = diffMat**2
     sqDistances = sqDiffMat.sum(axis=1)
     #print sqDistances
     distances = sqDistances**0.5             #use matrix to count the distance between inX and every training examples
-    sortedDistIndicies = distances.argsort() # get the sorted index saved in sortedDistIndicies    
-    classCount={}          
+    sortedDistIndicies = distances.argsort() # get the sorted index saved in sortedDistIndicies
+    classCount={}
     for i in range(k):                       # vote for the labels
         voteIlabel = labels[sortedDistIndicies[i]]
         classCount[voteIlabel] = classCount.get(voteIlabel,0) + 1
@@ -55,7 +55,7 @@ def file2matrix(filename):
     fr = open(filename)
     numberOfLines = len(fr.readlines())         #get the number of lines in the file
     returnMat = zeros((numberOfLines,3))        #prepare matrix to return
-    classLabelVector = []                       #prepare labels return   
+    classLabelVector = []                       #prepare labels return
     fr = open(filename)
     index = 0
     for line in fr.readlines():
@@ -89,9 +89,9 @@ def datingclassTest(hoRatio):
             errorCount += 1.0
     print "the total error rate is: %f" % (errorCount / float(numTestVecs))
     return errorCount / float(numTestVecs)
- 
+
 #check diff error in diff horatio and plot it
-def show_diff_horatio():   
+def show_diff_horatio():
     errorarray = []
     for i in range(9):
         errorarray.append(datingclassTest((i+1.0)/10))
@@ -99,7 +99,7 @@ def show_diff_horatio():
     ax = fig.add_subplot(111)
     ax.plot(arange(0.0,0.9,0.1),errorarray)
     plt.show()
-   
+
 def classifyPerson():
     resultList = ['not at all','in small doses', 'in large doses']
     percentTats = float(raw_input("percentage of time spent playing video games?"))
@@ -111,10 +111,10 @@ def classifyPerson():
     classifierResult = classify0((inArr-minVals)/ranges,normMat,datingLabels,3)
     print "You will probably like this person: ",resultList[classifierResult - 1]
 
-        
+
 def fun():
     datingDataMat,datingLabels = file2matrix(a_path + "datingTestSet2.txt")
-    normMat,ranges, minVals = autoNorm(datingDataMat) 
+    normMat,ranges, minVals = autoNorm(datingDataMat)
 
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -149,8 +149,8 @@ def handwritingClassTest():
         classNumStr = int(fileStr.split('_')[0])
         hwLabels.append(classNumStr)
         trainingMat[i,:] = img2vector(a_path + 'trainingDigits/%s' % fileNameStr)
-    
-    #begin to test    
+
+    #begin to test
     testFileList = listdir(a_path + 'testDigits')        #iterate through the test set
     errorCount = 0.0
     mTest = len(testFileList)
@@ -164,5 +164,5 @@ def handwritingClassTest():
         if (classifierResult != classNumStr): errorCount += 1.0
     print "\nthe total number of errors is: %d" % errorCount
     print "\nthe total error rate is: %f" % (errorCount/float(mTest))
-    
+
 #handwritingClassTest()

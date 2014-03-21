@@ -18,7 +18,7 @@ def loadDataSet(fileName):
         lineArr = line.strip().split('\t')
         dataMat.append([float(lineArr[0]),float(lineArr[1])])
         labelMat.append(float(lineArr[2]))
-    return dataMat,labelMat 
+    return dataMat,labelMat
 
 #choose other a
 def selectJrand(i,m):
@@ -32,7 +32,7 @@ def clipAlpha(aj,H,L):
         aj = H
     if L >aj:
         aj = L
-    return aj     
+    return aj
 
 
 #simplified SMP
@@ -45,7 +45,7 @@ def smoSimple(dataMatIn,classLabels,C,toler,maxIter):
         alphaPairsChanged = 0
         for i in range(m):
             #fXi is our prediction of the class   fXi = wT * xi + b
-            fXi = float(multiply(alphas,labelMat).T * (dataMatrix*dataMatrix[i,:].T)) + b 
+            fXi = float(multiply(alphas,labelMat).T * (dataMatrix*dataMatrix[i,:].T)) + b
             Ei = fXi - float(labelMat[i])
             #labelMat[i]*Ei = yi*(wT * xi + b) - 1  the condition is how to choose the i to optimize according to KKT
             if ((labelMat[i]*Ei < -toler) and (alphas[i] < C)) or ((labelMat[i]*Ei > toler) and (alphas[i] > 0)):
@@ -69,7 +69,7 @@ def smoSimple(dataMatIn,classLabels,C,toler,maxIter):
                 alphas[j] = clipAlpha(alphas[j],H,L)
                 if (abs(alphas[j] - alphaJold) < 0.00001): print "j not moving enough"; continue
                 #update i by the same amount as j  #the update is in the oppostie direction
-                alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j])                                                
+                alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j])
                 #update b according to ui = wT * xi + b and force ui = yi when input is xi to calculate b
                 b1 = b - Ei- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[i,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[i,:]*dataMatrix[j,:].T
                 b2 = b - Ej- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[j,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[j,:]*dataMatrix[j,:].T
@@ -84,7 +84,7 @@ def smoSimple(dataMatIn,classLabels,C,toler,maxIter):
         else: iter = 0
         print "iteration number: %d" % iter
     return b,alphas
-            
+
 
 class optStruct:
     #init
@@ -100,8 +100,8 @@ class optStruct:
         self.K = mat(zeros((self.m,self.m)))   # the kernel function
         for i in range(self.m):
             self.K[:,i] = kernelTrans(self.X, self.X[i,:], kTup)
-   
-#calculate Ek for oS[k]     
+
+#calculate Ek for oS[k]
 def calcEk(oS,k):
     fXk = float(multiply(oS.alphas,oS.labelMat).T * oS.K[:,k]) + oS.b
     Ek = fXk - float(oS.labelMat[k])
@@ -124,12 +124,12 @@ def selectJ(i,oS,Ei):
         j = selectJrand(i, oS.m)
         Ej = calcEk(oS, j)
     return j,Ej
- 
-#update the Ek when alphas[k] is updated   
+
+#update the Ek when alphas[k] is updated
 def updateEk(oS,k):
     Ek = calcEk(oS, k)
     oS.eCache[k] = [1,Ek]
-        
+
 def innerL(i,oS):
     Ei = calcEk(oS,i)
     if((oS.labelMat[i]*Ei < -oS.tol) and (oS.alphas[i] <oS.C)) or ((oS.labelMat[i]*Ei > oS.tol) and (oS.alphas[i] > 0)):
@@ -141,7 +141,7 @@ def innerL(i,oS):
         else:
             L = max(0,oS.alphas[i] + oS.alphas[j] - oS.C)
             H = min(oS.C,oS.alphas[i] + oS.alphas[j])
-            
+
         if(H == L):print " H == L";return 0
         else:
             eta = 2.0 * oS.K[i,j] - oS.K[i,i] - oS.K[j,j]
@@ -160,7 +160,7 @@ def innerL(i,oS):
         return 1
     else:
         return 0
-        
+
 def smoP(dataMatIn,classLabels,C,toler,maxIter,kTup=('lin',0)):
     oS = optStruct(mat(dataMatIn),mat(classLabels).transpose(),C,toler,kTup)
     iter = 0
@@ -216,7 +216,7 @@ def kernelTrans(X,A,kTup):
         K = exp(K/(-1*kTup[1]**2))
     else:
         raise NameError('Houston We have a problem -- that kernel is not recognized')
-    return K 
+    return K
 
 def testRbf(k1=0.9):
     dataArr,labelArr = loadDataSet('testSetRBF.txt')
@@ -242,7 +242,7 @@ def testRbf(k1=0.9):
         predict = kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict) != sign(labelArr[i]):errorCount += 1
     print "the test error rate is: %f" % (float(errorCount)/m)
-    
+
 #testRbf()
 
 def img2vector(filename):
@@ -294,6 +294,5 @@ def testDigits(kTup=('rbf',10)):
         predict = kernelEval.T * multiply(labelSV,alphas[svInd]) + b
         if sign(predict) != sign(labelArr[i]):errorCount += 1
     print "the test error rate is:%f" % (float(errorCount)/m)
-    
-    
+
 #testDigits(('rbf',20))

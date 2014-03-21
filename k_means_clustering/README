@@ -4,3 +4,6 @@ Pros: Easy to implement
 Cons: Can converge at local minima; slow on very large datasets
 
 k-means converges on a local minimum
+
+
+Bisecting K-means

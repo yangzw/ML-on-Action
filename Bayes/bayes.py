@@ -17,13 +17,13 @@ def createVocabList(dataSet):
     # 创建一个空集
     vocabSet = set([])
     for document in dataSet:
-        #  创建两个集合的并集  
+        #  创建两个集合的并集
         vocabSet = vocabSet | set(document)
     return list(vocabSet)
 
 #词集模型
 def setOfWords2Vec(vocabList, inputSet):
-    #创建一个其中所含元素都为0的向量 
+    #创建一个其中所含元素都为0的向量
     returnVec = [0]*len(vocabList)
     for word in inputSet:
         if word in vocabList:
@@ -33,7 +33,7 @@ def setOfWords2Vec(vocabList, inputSet):
 
 #词袋模型
 def bagOfWords2Vec(vocabList, inputSet):
-    #创建一个其中所含元素都为0的向量 
+    #创建一个其中所含元素都为0的向量
     returnVec = [0]*len(vocabList)
     for word in inputSet:
         if word in vocabList:
@@ -61,7 +61,7 @@ def trainNB0(trainMatrix,trainCategory):
             p0Denom += sum(trainMatrix[i])
     p1Vect =  log(p1Num/p1Denom) #change to log()为防止太多很小的数相乘出现下溢出
     # 对每个元素做除法
-    p0Vect = log(p0Num/p0Denom) 
+    p0Vect = log(p0Num/p0Denom)
     return p0Vect,p1Vect,pAbusive
 
 def classifyNB(vec2Classify,p0Vec,p1Vec,pClass1):
@@ -83,15 +83,15 @@ def testingNB():
     for postinDoc in listOPosts:
         trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
     p0V,p1V,pAb = trainNB0(array(trainMat),array(listClasses))
-    
+
     testEntry = ['love', 'my', 'dalmation']
     #转化成有无形式
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
     print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)
     testEntry = ['stupid', 'garbage']
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
-    print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)  
-    
+    print testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb)
+
 #testingNB()
 
 
@@ -100,10 +100,10 @@ def textParse(bigString):
     import re
     listOfTokens = re.split(r'\W*', bigString)
     return [tok.lower() for tok in listOfTokens if len(tok) > 2]
-    
+
 def spamTest():
     docList = [];classList = [];fullText = []
-    #分别将垃圾邮件和正常邮件导入 
+    #分别将垃圾邮件和正常邮件导入
     for i in range(1,26):
         wordList = textParse(open('email/spam/%d.txt' % i).read())
         docList.append(wordList)
@@ -128,21 +128,21 @@ def spamTest():
         trainClasses.append(classList[docIndex])
     p0v,p1v,pSpam = trainNB0(array(trainMat),array(trainClasses))
     #进行测试
-    errorCount = 0 
+    errorCount = 0
     for docIndex in testSet:
         wordVector = setOfWords2Vec(vocabList, docList[docIndex])
         if classifyNB(array(wordVector),p0v,p1v,pSpam) !=classList[docIndex]:
             errorCount += 1
-    print 'the error rate is: ',float(errorCount)/len(testSet)   
+    print 'the error rate is: ',float(errorCount)/len(testSet)
     return float(errorCount)/len(testSet)
 '''
 totalerror = 0.0
-for i in range(9):        
+for i in range(9):
     totalerror += spamTest()
 print totalerror/10
 '''
 #Rss 源分类器及高频词去除函数
-#（以下四行）计算出现频率 
+#（以下四行）计算出现频率
 def calcMostFreq(vocabList,fullText):
     import operator
     freqDict = {}
@@ -156,7 +156,7 @@ def localWords(feed1,feed0):
     docList=[]; classList = []; fullText =[]
     minLen = min(len(feed1['entries']),len(feed0['entries']))
     for i in range(minLen):
-        # 每次访问一条RSS源 
+        # 每次访问一条RSS源
         wordList = textParse(feed1['entries'][i]['summary'])
         docList.append(wordList)
         fullText.extend(wordList)
@@ -165,7 +165,7 @@ def localWords(feed1,feed0):
         docList.append(wordList)
         fullText.extend(wordList)
         classList.append(0)
-    #（以下四行）去掉出现次数最高的那些词  
+    #（以下四行）去掉出现次数最高的那些词
     vocabList = createVocabList(docList)
     top30Words = calcMostFreq(vocabList,fullText)
     for pairW in top30Words:
@@ -202,9 +202,9 @@ def getTopWords(ny,sf):
     print "SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**SF**"
     for item in sortedSF:
         print item[0]
-    sortedNY = sorted(topNY, key=lambda pair: pair[1], reverse=True) 
+    sortedNY = sorted(topNY, key=lambda pair: pair[1], reverse=True)
     print "NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY **"
     for item in sortedNY:
         print item[0]
-        
+
 #getTopWords(ny,sf)
