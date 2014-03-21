@@ -1,61 +1,64 @@
 ##NumPy笔记
 ###读SciPy and NumPy
 ####2 NumPy
- 1. python处理list是用迭代循环处理，低效;numpy的ndarray类似与list,但只能存储同一种类型的数据,速度快很多
- 2. matrix,matrix支持的是矩阵运算。matrix规定智能是2维的，numpy可以不受限制
- 3. 生成array的方法: `empty()` `array(list)` `zeros(n)` `arrange(n1,n2)``linespace``logspace` `fromstring` **`fromfunction(func,array)`** 等
- 4. astype()能够设置元素的数据类型:int,float16,float32等;也能通过指定dtype
- 5. reshape() 改变array的形状; ravel()将array拉平(即变成一维);shape()得出形状
- 6. recarray可以存储不同类型数据, 需要用dtype显式指定每列的数据类型,可以给每一列命名，并取得每一列的数据
-```python
-	import numpy as np
+1.  python处理list是用迭代循环处理，低效;numpy的ndarray类似与list,但只能存储同一种类型的数据,速度快很多
+2.  matrix,matrix支持的是矩阵运算。matrix规定智能是2维的，numpy可以不受限制
+3.  生成array的方法: `empty()` `array(list)` `zeros(n)` `arrange(n1,n2)``linespace``logspace` `fromstring` **`fromfunction(func,array)`** 等
+4.  astype()能够设置元素的数据类型:int,float16,float32等;也能通过指定dtype
+5.  reshape() 改变array的形状; ravel()将array拉平(即变成一维);shape()得出形状
+6.  recarray可以存储不同类型数据, 需要用dtype显式指定每列的数据类型,可以给每一列命名，并取得每一列的数据
+    ```python
+	   import numpy as np
 
-	recarr = np.zeros((2,), dtype=('i2,f4,a10'))
-	col1 = np.arrange(2) + 1
-	col2 = np.arrange(2,dtype=np.float32)
-	col3 = ['hello','world']
-	toadd = zip(col1,col2,col3)
-	recarr[:] = toadd
-	recarr.dtype.names = ('Integers','Floats','String')
-	recarr('Intergers')   #array([1,2], dtype=int32)
-```
-(markdown的bug? 必须在代码后面再加一行，否则下面的7就变1)
- 7. index 用整数列表/数组 布尔数组对元素进行存取,得到新的数组
-```python
-	arr = np.arange(5)
-	index = np.where(arr > 2) #or index = arr > 2
-	new_arr = arr[index]
+	   recarr = np.zeros((2,), dtype=('i2,f4,a10'))
+	   col1 = np.arrange(2) + 1
+	   col2 = np.arrange(2,dtype=np.float32)
+	   col3 = ['hello','world']
+	   toadd = zip(col1,col2,col3)
+	   recarr[:] = toadd
+	   recarr.dtype.names = ('Integers','Floats','String')
+    	   recarr('Intergers')   #array([1,2], dtype=int32)
+    ```
+    
+7.  index 用整数列表/数组 布尔数组对元素进行存取,得到新的数组
+    ```python
+	   arr = np.arange(5)
+	   index = np.where(arr > 2) #or index = arr > 2
+	   new_arr = arr[index]
 
-	new_arr = np.delete(arr,index)
-```
-支持切片;多维数组的切片
- 8. index可以用&和|操作
- 9. file操作: `loadtxt(filename)` ` savetxt(filename)`
-```python
-	# example.txt file looks like the following
-	# XR21 32.789 1
-	# XR22 33.091 2
+	   new_arr = np.delete(arr,index)
+    ```
+    支持切片;多维数组的切片
+8.  index可以用&和|操作
 
-	table = np.loadtxt('example.txt',
-	dtype='names': ('ID', 'Result', 'Type'),
-		'formats': ('S4', 'f4', 'i2'), align=True)
-	#dtype=[('ID', '|S4'), ('Result', '<f4'), ('Type', '<i2')])
-```
+9.  file操作: `loadtxt(filename)` ` savetxt(filename)`
+    ```python
+	   # example.txt file looks like the following
+	   # XR21 32.789 1
+	   # XR22 33.091 2
+
+	   table = np.loadtxt('example.txt',
+	   dtype='names': ('ID', 'Result', 'Type'),
+		  'formats': ('S4', 'f4', 'i2'), align=True)
+	   #dtype=[('ID', '|S4'), ('Result', '<f4'), ('Type', '<i2')])
+    ```
 
 ###读[Python科学计算](http://hyry.dip.jp/tech/book/page/scipy/numpy.html)
 ####ndarray对象
-1. 在上补充了部分。其中关于fromfunction 下面的例子：
-```python
-	def func(i,j):
-		return (i+1)*(j+1)
-	a = np.fromfunction(func2, (9,9))
-```
-a是一个九九乘法表的二位数组
-2. 上专题9中就是一个**结构数组**的例子;其中类型字符串前的字段:
->* | : 忽视字节顺序
->* < : 低位字节在前，即小端模式(little endian)
->* > : 高位字节在前，即大端模式(big endian)
+1.  在上补充了部分。其中关于fromfunction 下面的例子：
+    ```python
+	   def func(i,j):
+		  return (i+1)*(j+1)
+	   a = np.fromfunction(func2, (9,9))
+    ```
+    a是一个九九乘法表的二位数组
+2.  上专题9中就是一个**结构数组**的例子;其中类型字符串前的字段:
+    *   '|' : 忽视字节顺序
+    *   '<' : 低位字节在前，即小端模式(little endian)
+    *   '>' : 高位字节在前，即大端模式(big endian)
+        
+    可以用tofile()或者tostring()将其以二进制的方式转换成字符串或者写入文件;align是设置内存对齐，以便可以用c语言进行处理
+    
+3.  内存结构:
+<img src="./numpy_memory_struct.png" length="800" width="800"/>
 
-可以用tofile()或者tostring()将其以二进制的方式转换成字符串或者写入文件;align是设置内存对齐，以便可以用c语言进行处理
-3. 内存结构:
-![numpy_memory_struct](./numpy_memory_struct.png)
