@@ -31,8 +31,12 @@ k
 '''
 def classify0(inX, dataSet, labels, k):
     dataSetSize = dataSet.shape[0]
+    #tile: 
+    #b = tile([0,0],(2,2))
+    #then b = ([[0,0,0,0],[0,0,0,0]])
     diffMat = tile(inX, (dataSetSize,1)) - dataSet #count the diff between inX and training examples
     sqDiffMat = diffMat**2
+    #axis=1, then sum every row
     sqDistances = sqDiffMat.sum(axis=1)
     #print sqDistances
     distances = sqDistances**0.5             #use matrix to count the distance between inX and every training examples
@@ -66,7 +70,6 @@ def file2matrix(filename):
         index += 1
     return returnMat,classLabelVector
 
-
 # normalize
 def autoNorm(dataSet):
     minVals = dataSet.min(0)
@@ -80,7 +83,7 @@ def autoNorm(dataSet):
 
 def datingclassTest(hoRatio):
     m = normMat.shape[0]
-    numTestVecs = int(m*hoRatio)      #use 10% to test, other as training set
+    numTestVecs = int(m*hoRatio)      #use horatio% to test, other as training set
     errorCount = 0.0
     for i in range(numTestVecs):
         classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
@@ -112,6 +115,7 @@ def classifyPerson():
     print "You will probably like this person: ",resultList[classifierResult - 1]
 
 
+#draw the datingTestSet
 def fun():
     datingDataMat,datingLabels = file2matrix(a_path + "datingTestSet2.txt")
     normMat,ranges, minVals = autoNorm(datingDataMat)
@@ -120,8 +124,10 @@ def fun():
     ax  = fig.add_subplot(111)
     ax.scatter(normMat[:,0],normMat[:,1],15.0*array(datingLabels),15.0*array(datingLabels))
     plt.show()
-'''
 
+'''
+datingDataMat,datingLabels = file2matrix(a_path + "datingTestSet2.txt")
+normMat,ranges, minVals = autoNorm(datingDataMat)
 show_diff_horatio()
 #classifyPerson()
 '''
