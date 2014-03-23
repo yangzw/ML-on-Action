@@ -79,7 +79,7 @@ def testingNB():
     listOPosts,listClasses = loadDataSet()
     myVocabList = createVocabList(listOPosts)
     trainMat=[]
-    #转换成词袋/词集模型
+    #转换成词袋/词集模型,即有无某个词用数字矩阵来表示
     for postinDoc in listOPosts:
         trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
     p0V,p1V,pAb = trainNB0(array(trainMat),array(listClasses))
@@ -102,8 +102,9 @@ def textParse(bigString):
     return [tok.lower() for tok in listOfTokens if len(tok) > 2]
 
 def spamTest():
-    docList = [];classList = [];fullText = []
+    docList = [];classList = [];#fullText = []
     #分别将垃圾邮件和正常邮件导入
+    print "Reading spam and ham email now..."
     for i in range(1,26):
         wordList = textParse(open('email/spam/%d.txt' % i).read())
         docList.append(wordList)
@@ -122,12 +123,14 @@ def spamTest():
         testSet.append(trainingSet[randIndex])
         del(trainingSet[randIndex])
     #开始训练
+    print "begin to train now..."
     trainMat = [];trainClasses = []
     for docIndex in trainingSet:
         trainMat.append(setOfWords2Vec(vocabList,docList[docIndex]))
         trainClasses.append(classList[docIndex])
     p0v,p1v,pSpam = trainNB0(array(trainMat),array(trainClasses))
     #进行测试
+    print "begin to test now..."
     errorCount = 0
     for docIndex in testSet:
         wordVector = setOfWords2Vec(vocabList, docList[docIndex])
